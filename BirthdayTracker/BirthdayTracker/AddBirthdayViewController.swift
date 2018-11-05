@@ -18,8 +18,8 @@ class AddBirthdayViewController: UIViewController {
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         birthdatePicker.maximumDate = Date()
+        hideKyeboardWhenTappedAround()
     }
 
     @IBAction func saveTapped(_ sender: UIBarButtonItem) {
@@ -44,8 +44,7 @@ class AddBirthdayViewController: UIViewController {
             content.body = message
             content.sound = UNNotificationSound.default
             var dateComponents = Calendar.current.dateComponents([.month, .day], from: birthdate)
-            dateComponents.hour = 20
-            dateComponents.minute = 40
+            dateComponents.hour = 8
             let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
             if let identifier = newBirthday.birthdayId {
                 let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
@@ -67,4 +66,17 @@ class AddBirthdayViewController: UIViewController {
     }
 
 }
+
+extension UIViewController {
+    func hideKyeboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}
+
 
